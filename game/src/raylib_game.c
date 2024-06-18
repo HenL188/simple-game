@@ -2,7 +2,7 @@
 #include "ui.h"
 #include "levels.h"
 
-typedef enum Level { TITLE, ONE, TWO, GAMEOVER} Level;
+typedef enum Level { TITLE, ONE, TWO,THREE,FOUR,FIVE,SIX,SEVEN,EIGHT,NINE,TEN, GAMEOVER} Level;
 typedef enum Shape {CIRCLE, SQUARE, REC, TRI} Shape;
 int main() {
 	InitWindow(800, 450, "Window");
@@ -17,7 +17,7 @@ int main() {
 	int health = 100;
 	bool collison = false;
 	bool redCollison = false;
-	Level scene = TWO;
+	Level scene = FOUR;
 	Shape shape = CIRCLE;
 	int lives = 3;
 	while (!WindowShouldClose()) {
@@ -63,13 +63,13 @@ int main() {
 		}
 
 		if (p->y > GetScreenHeight() - 25) {
-			p->y = GetScreenHeight() - 25;
+			p->y = (float)GetScreenHeight() - 25.0f;
 		}
 		else if (p->y < 25) {
 			p->y = 25;
 		}
 		else if (p->x > GetScreenWidth() - 25) {
-			p->x = GetScreenWidth() - 25;
+			p->x = (float)GetScreenWidth() - 25.0f;
 		}
 		else if (p->x < 25) {
 			p->x = 25;
@@ -86,10 +86,10 @@ int main() {
 			break;
 		case TWO:
 			if (collison) {
-				color = BLACK;
+				scene = THREE;
 			}
 			if (redCollison) {
-				health -= 10 * GetFrameTime();
+				(float)health -= 10.0f * GetFrameTime();
 				if (health == 0) {
 					position = (Vector2){ 100,100 };
 					health = 100;
@@ -100,6 +100,10 @@ int main() {
 				}
 			}
 			break;
+		case THREE:
+			if (collison) {
+				scene = FOUR;
+			}
 		default:
 			scene = scene;
 			break;
@@ -122,9 +126,20 @@ int main() {
 			DrawRectangleV(boxPosition, (Vector2) { 50, 50 }, GREEN);
 			break;
 		case TWO:
-			ClearBackground(RAYWHITE);
 			DrawCircleV(position, radius, color);
 			LevelTwo(health,lives);
+			break;
+		case THREE:
+			ClearBackground(RAYWHITE);
+			Vector2 pos = { 100,100 };
+			for (int i = 0; i < 4; i++) {
+				DrawRectangleV(pos, (Vector2) { 50, 50 }, RED);
+				pos.x += 100;
+			}
+			break;
+		case FOUR:
+			ClearBackground(RAYWHITE);
+			TaskBar();
 			break;
 		case GAMEOVER:
 			ClearBackground(RAYWHITE);
@@ -135,7 +150,7 @@ int main() {
 			break;
 		default:
 			ClearBackground(RAYWHITE);
-			DrawText("Failed to load scene", 400, 225, 100, BLACK);
+			DrawText("Failed to load scene", 400, 225, 15, BLACK);
 			break;
 		}
 		

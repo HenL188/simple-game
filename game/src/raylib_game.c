@@ -3,7 +3,6 @@
 #include "levels.h"
 
 typedef enum Level { TITLE, ONE, TWO,THREE,FOUR,FIVE,SIX,SEVEN,EIGHT,NINE,TEN, GAMEOVER} Level;
-typedef enum Shape {CIRCLE, SQUARE, REC, TRI} Shape;
 int main() {
 	InitWindow(800, 450, "Window");
 	SetTargetFPS(60);
@@ -17,9 +16,9 @@ int main() {
 	int health = 100;
 	bool collison = false;
 	bool redCollison = false;
-	Level scene = FOUR;
-	Shape shape = CIRCLE;
+	Level scene = TWO;
 	int lives = 3;
+	bool x = false;
 	while (!WindowShouldClose()) {
 		if (scene == ONE) {
 			collison = CheckCollisionCircleRec(position, radius, (Rectangle){400,225,50,50});
@@ -28,13 +27,12 @@ int main() {
 			collison = CheckCollisionCircleRec(position, radius, (Rectangle) { 300, 325, 50, 50 });
 			redCollison = CheckCollisionCircleRec(position, radius, (Rectangle) { 200, 150, 50, 50 });
 		}
+		else if (scene == THREE) {
+			collison = CheckCollisionCircleRec(position, radius, (Rectangle) { 400, 225, 10, 10 });
+		}
 
 		if (IsKeyPressed(KEY_ENTER) && scene == TITLE ) {
 			scene = ONE;
-		}
-
-		if (IsKeyPressed(KEY_ONE)) {
-			shape = SQUARE;
 		}
 		
 		Vector2* p;
@@ -76,6 +74,12 @@ int main() {
 		}
 		else { position = position; }
 
+		if (lives == 0) {
+			scene = GAMEOVER;
+		}else{
+				scene = scene;
+		}
+
 		//position.y += gavity.y * GetFrameTime();
 		switch (scene)
 		{
@@ -89,20 +93,18 @@ int main() {
 				scene = THREE;
 			}
 			if (redCollison) {
-				(float)health -= 10.0f * GetFrameTime();
+				position.x += -10;
+				health -= 10.0f;
 				if (health == 0) {
 					position = (Vector2){ 100,100 };
 					health = 100;
 					lives -= 1;
-					if (lives == 0) {
-						scene = GAMEOVER;
-					}
-				}
+				} 
 			}
 			break;
 		case THREE:
 			if (collison) {
-				scene = FOUR;
+				x = true;
 			}
 		default:
 			scene = scene;
@@ -117,25 +119,20 @@ int main() {
 		case ONE:
 			ClearBackground(RAYWHITE);
 			DrawText("Tounch the green square", 70, 100, 50, BLACK);
-			if (shape == CIRCLE) {
-				DrawCircleV(position, radius, color);
-			}
-			else if (shape == SQUARE) {
-				DrawRectangleV(position, (Vector2) { 50, 50 }, color);
-			}
 			DrawRectangleV(boxPosition, (Vector2) { 50, 50 }, GREEN);
 			break;
 		case TWO:
-			DrawCircleV(position, radius, color);
 			LevelTwo(health,lives);
 			break;
 		case THREE:
 			ClearBackground(RAYWHITE);
+			DrawCircleV(position, radius, color);
 			Vector2 pos = { 100,100 };
 			for (int i = 0; i < 4; i++) {
 				DrawRectangleV(pos, (Vector2) { 50, 50 }, RED);
 				pos.x += 100;
 			}
+			if (x == false) DrawRectangle(400, 225, 10, 10, BLUE);
 			break;
 		case FOUR:
 			ClearBackground(RAYWHITE);

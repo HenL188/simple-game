@@ -1,24 +1,27 @@
 #include "raylib.h"
 #include "ui.h"
 #include "levels.h"
+#include "player.h"
 
 typedef enum Level { TITLE, ONE, TWO,THREE,FOUR,FIVE,SIX,SEVEN,EIGHT,NINE,TEN, GAMEOVER} Level;
+
 int main() {
 	InitWindow(800, 450, "Window");
 	SetTargetFPS(60);
 	
 	Vector2 position = { 100, 100 };
 	Vector2 boxPosition = { 400, 225 };
-	const float radius = 25.0f;
-	Color color = RED;
-	float speed = 2.0f;
+	float radius = 25.0f;
+	Color color = BLACK;
+	const float speed = 2.0f;
 	//Vector2 gavity = { 0,100 };
 	int health = 100;
 	bool collison = false;
 	bool redCollison = false;
-	Level scene = TWO;
+	Level scene = ONE;
 	int lives = 3;
 	bool x = false;
+
 	while (!WindowShouldClose()) {
 		if (scene == ONE) {
 			collison = CheckCollisionCircleRec(position, radius, (Rectangle){400,225,50,50});
@@ -35,49 +38,29 @@ int main() {
 			scene = ONE;
 		}
 		
-		Vector2* p;
-		p = &position;
-		if (IsKeyDown(KEY_RIGHT)) {
-			p->x += speed;
-			color = BLUE;
-		}
-		else if (IsKeyDown(KEY_LEFT)) {
-			p->x -= speed;
-			color = GREEN;
-		}
-		else if (IsKeyDown(KEY_UP)) {
-			//gavity.y = 2;
-			p->y -= speed + 1;
-			color = YELLOW;
-		}
-		else if (IsKeyDown(KEY_DOWN)) {
-			p->y += speed;
-			color = ORANGE;
-		}
-		else {
-			//gavity.y = 100;
-			position = position;
-			color = RED;
-		}
-
-		if (p->y > GetScreenHeight() - 25) {
-			p->y = (float)GetScreenHeight() - 25.0f;
-		}
-		else if (p->y < 25) {
-			p->y = 25;
-		}
-		else if (p->x > GetScreenWidth() - 25) {
-			p->x = (float)GetScreenWidth() - 25.0f;
-		}
-		else if (p->x < 25) {
-			p->x = 25;
-		}
-		else { position = position; }
-
+		Movement(speed, &position);
+		Bounds(&position, radius);
+		
 		if (lives == 0) {
 			scene = GAMEOVER;
 		}else{
-				scene = scene;
+			scene = scene;
+		}
+
+		if (IsKeyPressed(KEY_ONE)) {
+			radius = 25.0f;
+		}
+		else if (IsKeyPressed(KEY_TWO)) {
+			radius = 20.0f;
+		}
+		else if (IsKeyPressed(KEY_THREE)) {
+			radius = 15.0f;
+		}
+		else if (IsKeyPressed(KEY_FOUR)) {
+			radius = 10.0f;
+		}
+		else { 
+			radius = radius;
 		}
 
 		//position.y += gavity.y * GetFrameTime();
@@ -118,11 +101,13 @@ int main() {
 			break;
 		case ONE:
 			ClearBackground(RAYWHITE);
+			DrawCircleV(position, radius, color);
 			DrawText("Tounch the green square", 70, 100, 50, BLACK);
 			DrawRectangleV(boxPosition, (Vector2) { 50, 50 }, GREEN);
 			break;
 		case TWO:
 			LevelTwo(health,lives);
+			DrawCircleV(position, radius, color);
 			break;
 		case THREE:
 			ClearBackground(RAYWHITE);
@@ -147,7 +132,7 @@ int main() {
 			break;
 		default:
 			ClearBackground(RAYWHITE);
-			DrawText("Failed to load scene", 400, 225, 15, BLACK);
+			DrawText("Failed to load scene", 400, 225, 5, BLACK);
 			break;
 		}
 		

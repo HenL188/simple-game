@@ -266,6 +266,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="levels.c" />
+    <ClCompile Include="player.c" />
     <ClCompile Include="src\raylib_game.c" />
     <ClCompile Include="ui.c" />
   </ItemGroup>
@@ -276,6 +277,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="levels.h" />
+    <ClInclude Include="player.h" />
     <ClInclude Include="ui.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

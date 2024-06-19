@@ -21,6 +21,9 @@ void TaskBar() {
 		startPosV.x += 75;
 		endPosV.x += 75;
 	}
-	DrawCircle(285, 422, 20.0f, RED);
-	DrawRectangleV((Vector2) { 345, 405 }, (Vector2) { 35, 35 }, RED);
+	DrawCircle(285, 422, 20.0f, BLACK);
+	DrawCircle(363, 422, 15.0f, BLACK);
+	DrawCircle(437, 422, 10.0f, BLACK);
+	DrawCircle(512, 422, 5.0f, BLACK);
+	
 }

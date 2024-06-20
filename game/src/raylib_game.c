@@ -21,6 +21,7 @@ int main() {
 	Level scene = ONE;
 	int lives = 3;
 	bool x = false;
+	int healthUp = 0;
 
 	while (!WindowShouldClose()) {
 		if (scene == ONE) {
@@ -33,10 +34,12 @@ int main() {
 		else if (scene == THREE) {
 			collison = CheckCollisionCircleRec(position, radius, (Rectangle) { 400, 225, 10, 10 });
 		}
+		else { collison = collison; }
 
 		if (IsKeyPressed(KEY_ENTER) && scene == TITLE ) {
 			scene = ONE;
 		}
+		else { scene = scene; }
 		
 		Movement(speed, &position);
 		Bounds(&position, radius);
@@ -94,6 +97,8 @@ int main() {
 			break;
 		}
 
+		BeginDrawing();
+
 		switch (scene) {
 		case TITLE:
 			ClearBackground(RAYWHITE);
@@ -112,12 +117,22 @@ int main() {
 		case THREE:
 			ClearBackground(RAYWHITE);
 			DrawCircleV(position, radius, color);
+			HealthLives(health,lives);
 			Vector2 pos = { 100,100 };
 			for (int i = 0; i < 4; i++) {
 				DrawRectangleV(pos, (Vector2) { 50, 50 }, RED);
 				pos.x += 100;
 			}
 			if (x == false) DrawRectangle(400, 225, 10, 10, BLUE);
+			if (x == true && health < 100) {
+				if (healthUp == 0) {
+					health += 10;
+					healthUp = 1;
+				}
+				else { health = health; }
+			}
+			if (health > 100) health = 100;
+			else health = health;
 			break;
 		case FOUR:
 			ClearBackground(RAYWHITE);

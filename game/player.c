@@ -36,4 +36,3 @@ void Bounds(Vector2* p, float radius) {
 	}
 	else { ; }
 }
-

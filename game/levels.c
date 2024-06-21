@@ -2,7 +2,7 @@
 #include "levels.h"
 #include "ui.h"
 #include "player.h"
-
+#include "game.h"
 
 void LevelOne(void) {
 	ClearBackground(RAYWHITE);
@@ -18,16 +18,38 @@ void LevelTwo(int x, int y) {
 	HealthLives(x, y);
 }
 
-void LevelThree(int health, int lives, bool pickUpHealth) {
+Level LevelThree(int health, int lives, float radius, bool pickUpHealth, Level scene, Vector2 position) {
 	Rectangle box = { 300,325,20,20 };
+	bool colison = false;
 	ClearBackground(RAYWHITE);
 	DrawText("Blue iteams add health", 70, 100, 45, BLACK);
 	for (int i = 0; i < 4; i++) {
 		DrawRectangleRec(box, RED);
 		box.x += 20;
 	}
+	box.x = 300;
+	box.y = 245;
+	for (int j = 0; j < 4; j++) {
+		DrawRectangleRec(box, RED);
+		box.x += 20;
+	}
+	box.y = 255;
+	box.x = 375;
+	for (int j = 0; j < 4; j++) {
+		DrawRectangleRec(box, RED);
+		box.y += 20;
+	}
+
+	DrawRectangle(355, 285, 20, 20, GREEN);
+	
 	HealthLives(health, lives);
 	if (pickUpHealth == false) DrawRectangle(400, 225, 10, 10, BLUE);
 	else { ; }
-	
+	colison = CheckCollisionCircleRec(position, radius, (Rectangle) { 355, 285, 20, 20, });
+	if (colison) {
+		scene = FOUR;
+		return scene;
+	}
+	else { ; }
+	return scene;
 }

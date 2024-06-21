@@ -1,4 +1,6 @@
 #pragma once
 #include "raylib.h"
+#include "game.h"
 void Movement(float speed, Vector2* p);
 void Bounds(Vector2* p, float radius);
+

@@ -276,6 +276,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="game.h" />
     <ClInclude Include="levels.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="ui.h" />

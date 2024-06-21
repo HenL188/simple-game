@@ -2,8 +2,8 @@
 #include "ui.h"
 #include "levels.h"
 #include "player.h"
+#include "game.h"
 
-typedef enum Level { TITLE, ONE, TWO,THREE,FOUR,FIVE,SIX,SEVEN,EIGHT,NINE,TEN, GAMEOVER} Level;
 typedef struct sceneStart { bool one; bool two; bool three; bool four; bool five; bool six; bool seven; bool eight; bool nine; bool ten; } sceneStart;
 int main() {
 	InitWindow(800, 450, "Window");
@@ -18,11 +18,11 @@ int main() {
 	int health = 100;
 	bool collison = false;
 	bool redCollison = false;
-	Level scene = TITLE;
+	Level scene = TWO;
 	int lives = 3;
 	bool pickUpHealth = false;
 	int healthUp = 0;
-	bool ground = false;
+	bool collisonHealth = false;
 
 	while (!WindowShouldClose()) {
 
@@ -86,8 +86,7 @@ int main() {
 			}
 			else { ; }
 			if (redCollison) {
-				position.x += -10;
-				health -= 10.0f;
+				health -= 10.0f * GetFrameTime();
 				if (health == 0) {
 					position = (Vector2){ 100,100 };
 					health = 100;
@@ -98,9 +97,22 @@ int main() {
 			else { ; }
 			break;
 		case THREE:
-			collison = CheckCollisionCircleRec(position, radius, (Rectangle) { 400, 225, 10, 10 });
-			if (collison) {
+			collisonHealth = CheckCollisionCircleRec(position, radius, (Rectangle) { 400, 225, 10, 10 });
+			redCollison = CheckCollisionCircleRec(position, radius, (Rectangle) { 300, 325, 80, 20 });
+			if (collisonHealth) {
 				pickUpHealth = true;
+			}
+			else { ; }
+			
+
+			if (redCollison) {
+				health -= 10.0f * GetFrameTime();
+				if (health == 0) {
+					position = (Vector2){ 100,100 };
+					health = 100;
+					lives -= 1;
+				}
+				else { ; }
 			}
 			else { ; }
 		default:
@@ -125,19 +137,15 @@ int main() {
 			break;
 		case THREE:
 			DrawCircleV(position, radius, color);
-			//Vector2 pos = { 100,100 };
-			//for (int i = 0; i < 4; i++) {
-				//DrawRectangleV(pos, (Vector2) { 50, 50 }, RED);
-				//pos.x += 100;
-			//}
-			LevelThree(health, lives, pickUpHealth);
+			scene = LevelThree(health, lives,radius, pickUpHealth ,scene,position);
 			if (pickUpHealth == true && health < 100) {
 				if (healthUp == 0) {
 					health += 10;
 					healthUp = 1;
 				}
-				else { health = health; }
+
 			}
+			else { ; }
 			break;
 		case FOUR:
 			ClearBackground(RAYWHITE);

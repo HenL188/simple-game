@@ -17,7 +17,7 @@ void Movement(float speed, Vector2* p) {
 	}
 	else {
 		//gavity.y = 100;
-		p = p;
+		;
 	}
 }
 
@@ -34,6 +34,6 @@ void Bounds(Vector2* p, float radius) {
 	else if (p->x < radius) {
 		p->x = radius;
 	}
-	else { p = p; }
+	else { ; }
 }
 

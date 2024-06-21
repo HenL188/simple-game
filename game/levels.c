@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include "levels.h"
 #include "ui.h"
+#include "player.h"
 
 
 void LevelOne(void) {
@@ -9,7 +10,7 @@ void LevelOne(void) {
 	DrawRectangleV((Vector2) { 400, 225 }, (Vector2) { 50, 50 }, GREEN);
 }
 
-void LevelTwo(int x, int y){
+void LevelTwo(int x, int y) {
 	ClearBackground(RAYWHITE);
 	DrawText("Do not touch the red", 70, 100, 50, BLACK);
 	DrawRectangle(300, 325, 50, 50, GREEN);
@@ -27,5 +28,6 @@ void LevelThree(int health, int lives, bool pickUpHealth) {
 	}
 	HealthLives(health, lives);
 	if (pickUpHealth == false) DrawRectangle(400, 225, 10, 10, BLUE);
+	else { ; }
 	
 }

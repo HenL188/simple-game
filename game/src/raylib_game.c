@@ -4,12 +4,13 @@
 #include "player.h"
 
 typedef enum Level { TITLE, ONE, TWO,THREE,FOUR,FIVE,SIX,SEVEN,EIGHT,NINE,TEN, GAMEOVER} Level;
-
+typedef struct sceneStart { bool one; bool two; bool three; bool four; bool five; bool six; bool seven; bool eight; bool nine; bool ten; } sceneStart;
 int main() {
 	InitWindow(800, 450, "Window");
 	SetTargetFPS(60);
-	
+
 	Vector2 position = { 100, 100 };
+	sceneStart start = {true ,true, true, true, true, true, true, true, true, true};
 	float radius = 25.0f;
 	Color color = BLACK;
 	const float speed = 2.0f;
@@ -17,7 +18,7 @@ int main() {
 	int health = 100;
 	bool collison = false;
 	bool redCollison = false;
-	Level scene = ONE;
+	Level scene = TITLE;
 	int lives = 3;
 	bool pickUpHealth = false;
 	int healthUp = 0;
@@ -28,28 +29,11 @@ int main() {
 		Movement(speed, &position);
 		Bounds(&position, radius);
 
-		switch (scene)
-		{
-		case ONE:
-			collison = CheckCollisionCircleRec(position, radius, (Rectangle) { 400, 225, 50, 50 });
-			break;
-		case TWO:
-			collison = CheckCollisionCircleRec(position, radius, (Rectangle) { 300, 325, 50, 50 });
-			redCollison = CheckCollisionCircleRec(position, radius, (Rectangle) { 200, 150, 50, 50 });
-			break;
-		case THREE:
-			collison = CheckCollisionCircleRec(position, radius, (Rectangle) { 400, 225, 10, 10 });
-			break;
-		default:
-			collison = collison; 
-			break;
-		}
-
-		if (IsKeyPressed(KEY_ENTER) && scene == TITLE ) {
+		if (IsKeyPressed(KEY_ENTER) && scene == TITLE) {
 			scene = ONE;
 		}
-		else { scene = scene; }
-		
+		else { ; }
+
 		if (IsKeyPressed(KEY_ONE)) {
 			radius = 25.0f;
 		}
@@ -65,24 +49,42 @@ int main() {
 		else {
 			radius = radius;
 		}
-		
+
 		if (lives == 0) {
 			scene = GAMEOVER;
-		}else{
-			scene = scene;
 		}
+		else {
+			;
+		}
+
+		if (IsKeyPressed(KEY_ENTER) && scene == GAMEOVER) {
+			scene = TITLE;
+			lives = 3;
+		}
+		else { ; }
+
 		//position.y += gavity.y * GetFrameTime();
 		switch (scene)
 		{
 		case ONE:
+			collison = CheckCollisionCircleRec(position, radius, (Rectangle) { 400, 225, 50, 50 });
 			if (collison) {
 				scene = TWO;
 			}
+			else{ ; }
 			break;
 		case TWO:
+			collison = CheckCollisionCircleRec(position, radius, (Rectangle) { 300, 325, 50, 50 });
+			redCollison = CheckCollisionCircleRec(position, radius, (Rectangle) { 200, 150, 50, 50 });
+			if (scene == TWO && start.two == true) {
+				position = (Vector2){ 100,100 };
+				start.two = false;
+			}
+			else { ; }
 			if (collison) {
 				scene = THREE;
 			}
+			else { ; }
 			if (redCollison) {
 				position.x += -10;
 				health -= 10.0f;
@@ -90,15 +92,19 @@ int main() {
 					position = (Vector2){ 100,100 };
 					health = 100;
 					lives -= 1;
-				} 
+				}
+				else { ; }
 			}
+			else { ; }
 			break;
 		case THREE:
+			collison = CheckCollisionCircleRec(position, radius, (Rectangle) { 400, 225, 10, 10 });
 			if (collison) {
 				pickUpHealth = true;
 			}
+			else { ; }
 		default:
-			scene = scene;
+			;
 			break;
 		}
 
@@ -114,7 +120,7 @@ int main() {
 			DrawCircleV(position, radius, color);
 			break;
 		case TWO:
-			LevelTwo(health,lives);
+			LevelTwo(health, lives);
 			DrawCircleV(position, radius, color);
 			break;
 		case THREE:
@@ -124,7 +130,7 @@ int main() {
 				//DrawRectangleV(pos, (Vector2) { 50, 50 }, RED);
 				//pos.x += 100;
 			//}
-			LevelThree(health,lives,pickUpHealth);
+			LevelThree(health, lives, pickUpHealth);
 			if (pickUpHealth == true && health < 100) {
 				if (healthUp == 0) {
 					health += 10;
@@ -149,7 +155,7 @@ int main() {
 			DrawText("Failed to load scene", 400, 225, 5, BLACK);
 			break;
 		}
-		
+
 		EndDrawing();
 	}
 

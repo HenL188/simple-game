@@ -10,7 +10,6 @@ int main() {
 	SetTargetFPS(60);
 	
 	Vector2 position = { 100, 100 };
-	Vector2 boxPosition = { 400, 225 };
 	float radius = 25.0f;
 	Color color = BLACK;
 	const float speed = 2.0f;
@@ -20,36 +19,37 @@ int main() {
 	bool redCollison = false;
 	Level scene = ONE;
 	int lives = 3;
-	bool x = false;
+	bool pickUpHealth = false;
 	int healthUp = 0;
+	bool ground = false;
 
 	while (!WindowShouldClose()) {
-		if (scene == ONE) {
-			collison = CheckCollisionCircleRec(position, radius, (Rectangle){400,225,50,50});
-		}
-		else if (scene == TWO) {
+
+		Movement(speed, &position);
+		Bounds(&position, radius);
+
+		switch (scene)
+		{
+		case ONE:
+			collison = CheckCollisionCircleRec(position, radius, (Rectangle) { 400, 225, 50, 50 });
+			break;
+		case TWO:
 			collison = CheckCollisionCircleRec(position, radius, (Rectangle) { 300, 325, 50, 50 });
 			redCollison = CheckCollisionCircleRec(position, radius, (Rectangle) { 200, 150, 50, 50 });
-		}
-		else if (scene == THREE) {
+			break;
+		case THREE:
 			collison = CheckCollisionCircleRec(position, radius, (Rectangle) { 400, 225, 10, 10 });
+			break;
+		default:
+			collison = collison; 
+			break;
 		}
-		else { collison = collison; }
 
 		if (IsKeyPressed(KEY_ENTER) && scene == TITLE ) {
 			scene = ONE;
 		}
 		else { scene = scene; }
 		
-		Movement(speed, &position);
-		Bounds(&position, radius);
-		
-		if (lives == 0) {
-			scene = GAMEOVER;
-		}else{
-			scene = scene;
-		}
-
 		if (IsKeyPressed(KEY_ONE)) {
 			radius = 25.0f;
 		}
@@ -62,10 +62,15 @@ int main() {
 		else if (IsKeyPressed(KEY_FOUR)) {
 			radius = 10.0f;
 		}
-		else { 
+		else {
 			radius = radius;
 		}
-
+		
+		if (lives == 0) {
+			scene = GAMEOVER;
+		}else{
+			scene = scene;
+		}
 		//position.y += gavity.y * GetFrameTime();
 		switch (scene)
 		{
@@ -90,7 +95,7 @@ int main() {
 			break;
 		case THREE:
 			if (collison) {
-				x = true;
+				pickUpHealth = true;
 			}
 		default:
 			scene = scene;
@@ -105,34 +110,28 @@ int main() {
 			DrawText("Hit enter to play", 70, 100, 50, BLACK);
 			break;
 		case ONE:
-			ClearBackground(RAYWHITE);
+			LevelOne();
 			DrawCircleV(position, radius, color);
-			DrawText("Tounch the green square", 70, 100, 50, BLACK);
-			DrawRectangleV(boxPosition, (Vector2) { 50, 50 }, GREEN);
 			break;
 		case TWO:
 			LevelTwo(health,lives);
 			DrawCircleV(position, radius, color);
 			break;
 		case THREE:
-			ClearBackground(RAYWHITE);
 			DrawCircleV(position, radius, color);
-			HealthLives(health,lives);
-			Vector2 pos = { 100,100 };
-			for (int i = 0; i < 4; i++) {
-				DrawRectangleV(pos, (Vector2) { 50, 50 }, RED);
-				pos.x += 100;
-			}
-			if (x == false) DrawRectangle(400, 225, 10, 10, BLUE);
-			if (x == true && health < 100) {
+			//Vector2 pos = { 100,100 };
+			//for (int i = 0; i < 4; i++) {
+				//DrawRectangleV(pos, (Vector2) { 50, 50 }, RED);
+				//pos.x += 100;
+			//}
+			LevelThree(health,lives,pickUpHealth);
+			if (pickUpHealth == true && health < 100) {
 				if (healthUp == 0) {
 					health += 10;
 					healthUp = 1;
 				}
 				else { health = health; }
 			}
-			if (health > 100) health = 100;
-			else health = health;
 			break;
 		case FOUR:
 			ClearBackground(RAYWHITE);
@@ -156,4 +155,3 @@ int main() {
 
 	CloseWindow();
 }
-

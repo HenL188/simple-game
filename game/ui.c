@@ -6,7 +6,7 @@ void HealthLives(int x, int y) {
 	DrawText(TextFormat("Lives: %i", y), 650, 10, 30, BLACK);
 }
 
-void TaskBar() {
+void TaskBar(void) {
 	Vector2 startPosH = { 550,397 };
 	Vector2 endPosH = { 248, 397};
 	Vector2 startPosV = { 250,448 };

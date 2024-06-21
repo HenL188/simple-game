@@ -1,6 +1,7 @@
 #include "player.h"
 
 void Movement(float speed, Vector2* p) {
+
 	if (IsKeyDown(KEY_RIGHT)) {
 		p->x += speed;
 	}
@@ -20,18 +21,19 @@ void Movement(float speed, Vector2* p) {
 	}
 }
 
-void Bounds(Vector2* p, float radis) {
-	if (p->y > GetScreenHeight() - radis) {
-		p->y = (float)GetScreenHeight() - radis;
+void Bounds(Vector2* p, float radius) {
+	if (p->y > GetScreenHeight() - radius) {
+		p->y = (float)GetScreenHeight() - radius;
 	}
-	else if (p->y < radis) {
-		p->y = radis;
+	else if (p->y < radius) {
+		p->y = radius;
 	}
-	else if (p->x > GetScreenWidth() - radis) {
-		p->x = (float)GetScreenWidth() - radis;
+	else if (p->x > GetScreenWidth() - radius) {
+		p->x = (float)GetScreenWidth() - radius;
 	}
-	else if (p->x < radis) {
-		p->x = radis;
+	else if (p->x < radius) {
+		p->x = radius;
 	}
 	else { p = p; }
 }
+

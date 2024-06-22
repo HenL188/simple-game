@@ -2,17 +2,17 @@
 
 void Movement(float speed, Vector2* p) {
 
-	if (IsKeyDown(KEY_RIGHT)) {
+	if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) {
 		p->x += speed;
 	}
-	else if (IsKeyDown(KEY_LEFT)) {
+	else if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) {
 		p->x -= speed;
 	}
-	else if (IsKeyDown(KEY_UP)) {
+	else if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) {
 		//gavity.y = 2;
 		p->y -= speed + 1;
 	}
-	else if (IsKeyDown(KEY_DOWN)) {
+	else if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)) {
 		p->y += speed;
 	}
 	else {

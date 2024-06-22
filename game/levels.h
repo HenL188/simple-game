@@ -4,4 +4,4 @@
 
 void LevelOne(void);
 void LevelTwo(int x, int y);
-Level LevelThree(int health, int lives, float radius, bool pickUpHealth, Level scene, Vector2 position);
+void LevelThree(int health, int lives, float radius, bool pickUpHealth);

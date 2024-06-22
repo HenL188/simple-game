@@ -9,25 +9,24 @@ int main() {
 	InitWindow(800, 450, "Window");
 	SetTargetFPS(60);
 
-	Vector2 position = { 100, 100 };
+	Vector2 position = { 0, 225 };
+	Vector2 spawn = { 0, 225 };
 	sceneStart start = {true ,true, true, true, true, true, true, true, true, true};
 	float radius = 25.0f;
 	Color color = BLACK;
 	const float speed = 2.0f;
 	//Vector2 gavity = { 0,100 };
 	int health = 100;
-	bool collison = false;
-	bool redCollison = false;
-	Level scene = TWO;
+	Level scene = ONE;
 	int lives = 3;
 	bool pickUpHealth = false;
 	int healthUp = 0;
-	bool collisonHealth = false;
 
 	while (!WindowShouldClose()) {
 
 		Movement(speed, &position);
 		Bounds(&position, radius);
+
 
 		if (IsKeyPressed(KEY_ENTER) && scene == TITLE) {
 			scene = ONE;
@@ -50,16 +49,19 @@ int main() {
 			radius = radius;
 		}
 
-		if (lives == 0) {
-			scene = GAMEOVER;
-		}
-		else {
-			;
-		}
-
 		if (IsKeyPressed(KEY_ENTER) && scene == GAMEOVER) {
 			scene = TITLE;
 			lives = 3;
+		}
+		else { ; }
+
+		if (lives == 0) {
+			scene = GAMEOVER;
+		}
+		else { ; }
+
+		if (health > 100) {
+			health = 100;
 		}
 		else { ; }
 
@@ -67,54 +69,89 @@ int main() {
 		switch (scene)
 		{
 		case ONE:
-			collison = CheckCollisionCircleRec(position, radius, (Rectangle) { 400, 225, 50, 50 });
-			if (collison) {
-				scene = TWO;
+			if (start.one == true) {
+				bool collison = false;
+				collison = CheckCollisionCircleRec(position, radius, (Rectangle) { 400, 225, 50, 50 });
+				if (collison) {
+					scene = TWO;
+				}
 			}
-			else{ ; }
 			break;
 		case TWO:
-			collison = CheckCollisionCircleRec(position, radius, (Rectangle) { 300, 325, 50, 50 });
-			redCollison = CheckCollisionCircleRec(position, radius, (Rectangle) { 200, 150, 50, 50 });
-			if (scene == TWO && start.two == true) {
-				position = (Vector2){ 100,100 };
+			if (start.two == true) {
+				position = spawn;
 				start.two = false;
 			}
-			else { ; }
-			if (collison) {
-				scene = THREE;
-			}
-			else { ; }
-			if (redCollison) {
-				health -= 10.0f * GetFrameTime();
-				if (health == 0) {
-					position = (Vector2){ 100,100 };
-					health = 100;
-					lives -= 1;
+			else {
+				bool collison = false;
+				bool redCollison = false;
+				collison = CheckCollisionCircleRec(position, radius, (Rectangle) { 300, 325, 50, 50 });
+				redCollison = CheckCollisionCircleRec(position, radius, (Rectangle) { 200, 150, 50, 50 });
+				if (collison) {
+					scene = THREE;
+				}
+				else { ; }
+				if (redCollison) {
+					health -= 10.0f * GetFrameTime();
+					if (health == 0) {
+						position = spawn;
+						health = 100;
+						lives -= 1;
+					}
+					else { ; }
 				}
 				else { ; }
 			}
-			else { ; }
+			
 			break;
 		case THREE:
-			collisonHealth = CheckCollisionCircleRec(position, radius, (Rectangle) { 400, 225, 10, 10 });
-			redCollison = CheckCollisionCircleRec(position, radius, (Rectangle) { 300, 325, 80, 20 });
-			if (collisonHealth) {
-				pickUpHealth = true;
+			if (start.three == true) {
+				position = spawn;
+				health = 90;
+				start.three = false;
 			}
-			else { ; }
-			
+			else {
+				bool collison = false;
+				bool collisonHealth = false;
+				bool redCollison1 = false;
+				bool redCollison2 = false;
+				bool redCollison3 = false;
+				collison = CheckCollisionCircleRec(position, radius, (Rectangle) { 355, 285, 20, 20, });
+				collisonHealth = CheckCollisionCircleRec(position, radius, (Rectangle) { 400, 225, 10, 10 });
+				redCollison1 = CheckCollisionCircleRec(position, radius, (Rectangle) { 300, 325, 80, 20 });
+				redCollison2 = CheckCollisionCircleRec(position, radius, (Rectangle) { 300, 245, 80, 20 });
+				redCollison3 = CheckCollisionCircleRec(position, radius, (Rectangle) { 375, 255, 20, 80 });
 
-			if (redCollison) {
-				health -= 10.0f * GetFrameTime();
-				if (health == 0) {
-					position = (Vector2){ 100,100 };
-					health = 100;
-					lives -= 1;
+				if (collison) {
+					scene = FOUR;
+				}
+				else { ; }
+
+				if (collisonHealth) {
+					pickUpHealth = true;
+				}
+				else { ; }
+				if (pickUpHealth == true && health < 100) {
+					if (healthUp == 0) {
+						health += 10;
+						healthUp = 1;
+					}
+				}
+				else { ; }
+
+				if (redCollison1 || redCollison2 || redCollison3) {
+					health -= 10.0f * GetFrameTime();
+					if (health == 0) {
+						position = spawn;
+						health = 100;
+						lives -= 1;
+					}
+					else { ; }
 				}
 				else { ; }
 			}
-			else { ; }
+			
+			
 		default:
 			;
 			break;
@@ -137,18 +174,11 @@ int main() {
 			break;
 		case THREE:
 			DrawCircleV(position, radius, color);
-			scene = LevelThree(health, lives,radius, pickUpHealth ,scene,position);
-			if (pickUpHealth == true && health < 100) {
-				if (healthUp == 0) {
-					health += 10;
-					healthUp = 1;
-				}
-
-			}
-			else { ; }
+			LevelThree(health, lives,radius, pickUpHealth);
 			break;
 		case FOUR:
 			ClearBackground(RAYWHITE);
+			HealthLives(health,lives);
 			TaskBar();
 			break;
 		case GAMEOVER:

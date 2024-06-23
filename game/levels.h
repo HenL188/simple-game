@@ -1,7 +1,9 @@
 #pragma once
 #include "raylib.h"
-#include "game.h"
+
 
 void LevelOne(void);
-void LevelTwo(int x, int y);
-void LevelThree(int health, int lives, float radius, bool pickUpHealth);
+void LevelTwo(int health, int lives);
+void LevelThree(int health, int lives, bool pickUpHealth);
+void LevelFour(int health, int lives, bool pickUpLife, Color color);
+

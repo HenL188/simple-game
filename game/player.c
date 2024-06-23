@@ -36,3 +36,23 @@ void Bounds(Vector2* p, float radius) {
 	}
 	else { ; }
 }
+
+float SizeChage(float radius)
+{
+	if (IsKeyPressed(KEY_ONE)) {
+		radius = 25.0f;
+	}
+	else if (IsKeyPressed(KEY_TWO)) {
+		radius = 20.0f;
+	}
+	else if (IsKeyPressed(KEY_THREE)) {
+		radius = 15.0f;
+	}
+	else if (IsKeyPressed(KEY_FOUR)) {
+		radius = 10.0f;
+	}
+	else {
+		radius = radius;
+	}
+	return radius;
+}

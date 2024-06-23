@@ -2,7 +2,7 @@
 #include "levels.h"
 #include "ui.h"
 #include "player.h"
-#include "game.h"
+
 
 void LevelOne(void) {
 	ClearBackground(RAYWHITE);
@@ -10,15 +10,15 @@ void LevelOne(void) {
 	DrawRectangleV((Vector2) { 400, 225 }, (Vector2) { 50, 50 }, GREEN);
 }
 
-void LevelTwo(int x, int y) {
+void LevelTwo(int health, int lives) {
 	ClearBackground(RAYWHITE);
 	DrawText("Do not touch the red", 70, 100, 50, BLACK);
 	DrawRectangle(300, 325, 50, 50, GREEN);
 	DrawRectangle(200, 150, 50, 50, RED);
-	HealthLives(x, y);
+	HealthLives(health, lives);
 }
 
-void LevelThree(int health, int lives, float radius, bool pickUpHealth) {
+void LevelThree(int health, int lives, bool pickUpHealth) {
 	Rectangle box = { 300,325,20,20 };
 	ClearBackground(RAYWHITE);
 	DrawText("Blue iteams add health", 70, 100, 45, BLACK);
@@ -44,4 +44,20 @@ void LevelThree(int health, int lives, float radius, bool pickUpHealth) {
 	HealthLives(health, lives);
 	if (pickUpHealth == false) DrawRectangle(400, 225, 10, 10, BLUE);
 	else { ; }
+}
+
+void LevelFour(int health, int lives, bool pickUpLife, Color color)
+{
+	Rectangle box = { 320,150,40,40 };
+	ClearBackground(RAYWHITE);
+	DrawText("Purple iteams add lives", 70, 100, 45, BLACK);
+	HealthLives(health, lives);
+	if (pickUpLife == false) DrawRectangle(400, 225, 10, 10, PURPLE);
+	else { ; }
+	DrawRectangle(400, 225, 50, 50, color);
+	DrawRectangle(200, 425, 50, 50, GREEN);
+	for (int i = 0; i < 4; i++){
+		DrawRectangleRec(box, RED);
+		box.x += 40;
+	}
 }

@@ -2,9 +2,9 @@
 #include "ui.h"
 #include "levels.h"
 #include "player.h"
-#include "game.h"
 
 typedef struct sceneStart { bool one; bool two; bool three; bool four; bool five; bool six; bool seven; bool eight; bool nine; bool ten; } sceneStart;
+typedef enum Level { TITLE, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, GAMEOVER, CREDITS } Level;
 int main() {
 	InitWindow(800, 450, "Window");
 	SetTargetFPS(60);
@@ -14,46 +14,22 @@ int main() {
 	sceneStart start = {true ,true, true, true, true, true, true, true, true, true};
 	float radius = 25.0f;
 	Color color = BLACK;
+	Color hidden = GREEN;
 	const float speed = 2.0f;
 	//Vector2 gavity = { 0,100 };
 	int health = 100;
-	Level scene = ONE;
-	int lives = 3;
-	bool pickUpHealth = false;
 	int healthUp = 0;
+	Level scene = 4;
+	int lives = 3;
+	int lifeUp = 0;
+	bool pickUpHealth = false;
+	bool pickUpLife = false;
 
 	while (!WindowShouldClose()) {
 
 		Movement(speed, &position);
 		Bounds(&position, radius);
-
-
-		if (IsKeyPressed(KEY_ENTER) && scene == TITLE) {
-			scene = ONE;
-		}
-		else { ; }
-
-		if (IsKeyPressed(KEY_ONE)) {
-			radius = 25.0f;
-		}
-		else if (IsKeyPressed(KEY_TWO)) {
-			radius = 20.0f;
-		}
-		else if (IsKeyPressed(KEY_THREE)) {
-			radius = 15.0f;
-		}
-		else if (IsKeyPressed(KEY_FOUR)) {
-			radius = 10.0f;
-		}
-		else {
-			radius = radius;
-		}
-
-		if (IsKeyPressed(KEY_ENTER) && scene == GAMEOVER) {
-			scene = TITLE;
-			lives = 3;
-		}
-		else { ; }
+		radius = SizeChage(radius);
 
 		if (lives == 0) {
 			scene = GAMEOVER;
@@ -68,6 +44,12 @@ int main() {
 		//position.y += gavity.y * GetFrameTime();
 		switch (scene)
 		{
+		case TITLE:
+			if (IsKeyPressed(KEY_ENTER)) {
+				scene = ONE;
+			}
+			else { ; }
+			break;
 		case ONE:
 			if (start.one == true) {
 				bool collison = false;
@@ -150,11 +132,48 @@ int main() {
 				}
 				else { ; }
 			}
-			
-			
-		default:
-			;
 			break;
+		case FOUR:
+			if (start.four == true) {
+				position = spawn;
+				lives = 2;
+				start.four = false;
+			}
+			else { 
+				bool collison1 = false;
+				bool collison2 = false;
+				bool collisonLife = false;
+				collisonLife = CheckCollisionCircleRec(position, radius, (Rectangle) { 400, 225, 10, 10 });
+				collison1 = CheckCollisionCircleRec(position, radius, (Rectangle) { 400, 225, 50, 50 });
+				collison2 = CheckCollisionCircleRec(position, radius, (Rectangle) { 200, 425, 50, 50 });
+				if (collisonLife) pickUpLife = true;
+				else { ; }
+				if (pickUpLife == true) {
+					if (lifeUp == 0) {
+						lives += 1;
+						lifeUp = 1;
+					}
+					else { ; }
+					if (collison2) scene = FIVE;
+					else { ; }
+				}
+				else { ; }
+				if (collison1 == true) hidden = (Color){ 245,245,245,0 };
+				else { hidden = GREEN; }
+			}
+			break;
+		case GAMEOVER:
+			if (IsKeyPressed(KEY_ENTER)) {
+				scene = TITLE;
+				lives = 3;
+			}
+			else { ; }
+			break;
+		case CREDITS:
+			break;
+		default:
+			NULL;
+		break;
 		}
 
 		BeginDrawing();
@@ -174,12 +193,36 @@ int main() {
 			break;
 		case THREE:
 			DrawCircleV(position, radius, color);
-			LevelThree(health, lives,radius, pickUpHealth);
+			LevelThree(health, lives, pickUpHealth);
 			break;
 		case FOUR:
+			DrawCircleV(position, radius, color);
+			LevelFour(health,lives,pickUpLife,hidden);
+			break;
+		case FIVE:
 			ClearBackground(RAYWHITE);
-			HealthLives(health,lives);
 			TaskBar();
+			DrawCircleV(position, radius, color);
+			break;
+		case SIX:
+			TaskBar();
+			DrawCircleV(position, radius, color);
+			break;
+		case SEVEN:
+			TaskBar();
+			DrawCircleV(position, radius, color);
+			break;
+		case EIGHT:
+			TaskBar();
+			DrawCircleV(position, radius, color);
+			break;
+		case NINE:
+			TaskBar();
+			DrawCircleV(position, radius, color);
+			break;
+		case TEN:
+			TaskBar();
+			DrawCircleV(position, radius, color);
 			break;
 		case GAMEOVER:
 			ClearBackground(RAYWHITE);
@@ -188,9 +231,16 @@ int main() {
 				scene = TITLE;
 			}
 			break;
+		case CREDITS:
+			NULL;
+			break;
 		default:
 			ClearBackground(RAYWHITE);
-			DrawText("Failed to load scene", 400, 225, 5, BLACK);
+			DrawText("Failed to load level", 300, 200, 30, BLACK);
+			DrawText("Hit enter to contiue or exit game", 200, 225, 30, BLACK);
+			if (IsKeyDown(KEY_ENTER)) {
+				scene = TITLE;
+			}
 			break;
 		}
 

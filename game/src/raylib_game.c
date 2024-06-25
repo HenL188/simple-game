@@ -139,13 +139,36 @@ int main() {
 				lives = 2;
 				start.four = false;
 			}
-			else { 
+			else {
 				bool collison1 = false;
 				bool collison2 = false;
 				bool collisonLife = false;
-				collisonLife = CheckCollisionCircleRec(position, radius, (Rectangle) { 400, 225, 10, 10 });
-				collison1 = CheckCollisionCircleRec(position, radius, (Rectangle) { 400, 225, 50, 50 });
-				collison2 = CheckCollisionCircleRec(position, radius, (Rectangle) { 200, 425, 50, 50 });
+				bool collisonRed = false;
+				bool collisonRed2 = false;
+				bool collisonRed3 = false;
+				bool collisonRed4 = false;
+				bool collisonRed5 = false;
+				bool collisonRed6 = false;
+
+				collisonLife = CheckCollisionCircleRec(position, radius, (Rectangle) { 390, 185, 10, 10 });
+				collison1 = CheckCollisionCircleRec(position, radius, (Rectangle) { 375, 183, 40, 40 });
+				collison2 = CheckCollisionCircleRec(position, radius, (Rectangle) { 375, 377, 40, 40 });
+				collisonRed = CheckCollisionCircleRec(position, radius, (Rectangle) { 320, 150, 150, 30 });
+				collisonRed2 = CheckCollisionCircleRec(position, radius, (Rectangle) { 320, 420, 150, 30 });
+				collisonRed3 = CheckCollisionCircleRec(position, radius, (Rectangle) { 320, 180, 30, 60 });
+				collisonRed4 = CheckCollisionCircleRec(position, radius, (Rectangle) { 440, 180, 30, 60 });
+				collisonRed5 = CheckCollisionCircleRec(position, radius, (Rectangle) { 320, 390, 30, 60 });
+				collisonRed6 = CheckCollisionCircleRec(position, radius, (Rectangle) { 440, 390, 30, 60 });
+				
+				if (collisonRed || collisonRed2 || collisonRed3 ||  collisonRed4 || collisonRed5 || collisonRed6) {
+					health -= 10.0f * GetFrameTime();
+					if (health == 0) {
+						position = spawn;
+						health = 100;
+						lives -= 1;
+					}
+					else { ; }
+				}
 				if (collisonLife) pickUpLife = true;
 				else { ; }
 				if (pickUpLife == true) {

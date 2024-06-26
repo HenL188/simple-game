@@ -19,12 +19,13 @@ int main() {
 	//Vector2 gavity = { 0,100 };
 	int health = 100;
 	int healthUp = 0;
-	Level scene = 5;
+	Level scene = 6;
 	int lives = 3;
 	int lifeUp = 0;
 	bool pickUpHealth = false;
 	bool pickUpLife = false;
-
+	Rectangle box = { 400,225,100,224};
+	float boxSpeed = 2.0f;
 	while (!WindowShouldClose()) {
 
 		Movement(speed, &position);
@@ -117,7 +118,9 @@ int main() {
 					if (healthUp == 0) {
 						health += 10;
 						healthUp = 1;
+						pickUpHealth = false;
 					}
+					else { ; }
 				}
 				else { ; }
 
@@ -176,6 +179,7 @@ int main() {
 					if (lifeUp == 0) {
 						lives += 1;
 						lifeUp = 1;
+						pickUpLife = false;
 					}
 					else { ; }
 					if (collison2) scene = FIVE;
@@ -227,6 +231,40 @@ int main() {
 				else { ; }
 			}
 			break;
+		case SIX:
+			if (start.six == true) {
+				position = spawn;
+				start.six = false;
+			} else{
+				box.y += boxSpeed;
+				if (((box.y + box.height) >= GetScreenHeight()) || (box.y <= 0)) boxSpeed *= -1;
+				bool collisonRed = CheckCollisionCircleRec(position, radius, box);
+				bool collisonHealth = CheckCollisionCircleRec(position, radius, (Rectangle) { 500, 150, 10, 10 });
+				bool collison = CheckCollisionCircleRec(position, radius, (Rectangle) { 600, 225, 50, 50});
+				if (collisonRed) {
+					health -= 10.0f * GetFrameTime();
+					if (health == 0) {
+						position = spawn;
+						health = 100;
+						lives -= 1;
+					}
+					else { ; }
+				}
+				else { ; }
+				if (collisonHealth) pickUpHealth = true;
+				if(pickUpHealth == true && health < 100) {
+					if (healthUp == 0) {
+						health += 10;
+						healthUp = 1;
+						pickUpHealth = false;
+					}
+					else { ; }
+				}
+				else { ; }
+				if (collison) scene = SEVEN;
+				else { ; }
+			}
+			break;
 		case GAMEOVER:
 			if (IsKeyPressed(KEY_ENTER)) {
 				scene = TITLE;
@@ -270,9 +308,9 @@ int main() {
 			LevelFive(health,lives);
 			break;
 		case SIX:
-			ClearBackground(RAYWHITE);
-			TaskBar();
 			DrawCircleV(position, radius, color);
+			LevelSix(health, lives, pickUpHealth);
+			DrawRectangleRec(box, RED);
 			break;
 		case SEVEN:
 			ClearBackground(RAYWHITE);

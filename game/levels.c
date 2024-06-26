@@ -115,3 +115,13 @@ void LevelFive(int health, int lives)
 		box.y -= 10;
 	}
 }
+
+void LevelSix(int health, int lives, bool pickUpHealth) 
+{
+	ClearBackground(RAYWHITE);
+	TaskBar();
+	HealthLives(health, lives);
+	if (pickUpHealth == false) DrawRectangle(500, 150, 10, 10, PURPLE);
+	else { ; }
+	DrawRectangle(600, 225, 50, 50, GREEN);
+}

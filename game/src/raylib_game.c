@@ -19,7 +19,7 @@ int main() {
 	//Vector2 gavity = { 0,100 };
 	int health = 100;
 	int healthUp = 0;
-	Level scene = 4;
+	Level scene = 5;
 	int lives = 3;
 	int lifeUp = 0;
 	bool pickUpHealth = false;
@@ -169,6 +169,7 @@ int main() {
 					}
 					else { ; }
 				}
+				else { ; }
 				if (collisonLife) pickUpLife = true;
 				else { ; }
 				if (pickUpLife == true) {
@@ -185,10 +186,52 @@ int main() {
 				else { hidden = GREEN; }
 			}
 			break;
+		case FIVE:
+			if (start.five == true) {
+				position = spawn;
+				start.five = false;
+			}
+			else {
+				bool collison = false;
+				bool collisonRed = false;
+				bool collisonRed2 = false;
+				bool collisonRed3= false;
+				bool collisonRed4 = false;
+				bool collisonRed5= false;
+				bool collisonRed6 = false;
+				bool collisonRed7 = false;
+				bool collisonRed8 = false;
+				collison = CheckCollisionCircleRec(position, radius, (Rectangle) { 418, 223, 7.5, 7.5 });
+				collisonRed = CheckCollisionCircleRec(position, radius, (Rectangle) { 200, 160, 50, 50 });
+				collisonRed2 = CheckCollisionCircleRec(position, radius, (Rectangle) { 270, 170, 40, 40 });
+				collisonRed3 = CheckCollisionCircleRec(position, radius, (Rectangle) { 340, 180, 30, 30 });
+				collisonRed4 = CheckCollisionCircleRec(position, radius, (Rectangle) { 410, 190, 20, 20 });
+				collisonRed5 = CheckCollisionCircleRec(position, radius, (Rectangle) { 200, 270, 50, 50 });
+				collisonRed6 = CheckCollisionCircleRec(position, radius, (Rectangle) { 270, 260, 40, 40 });
+				collisonRed7 = CheckCollisionCircleRec(position, radius, (Rectangle) { 340, 250, 30, 30 });
+				collisonRed8 = CheckCollisionCircleRec(position, radius, (Rectangle) { 410, 240, 20, 20 });
+
+				if (collison) {
+					scene = SIX;
+				}
+				else { ; }
+				if (collisonRed || collisonRed2 || collisonRed3 || collisonRed4 || collisonRed5 || collisonRed6 || collisonRed7 || collisonRed8) {
+					health -= 10.0f * GetFrameTime();
+					if (health == 0) {
+						position = spawn;
+						health = 100;
+						lives -= 1;
+					}
+					else { ; }
+				}
+				else { ; }
+			}
+			break;
 		case GAMEOVER:
 			if (IsKeyPressed(KEY_ENTER)) {
 				scene = TITLE;
 				lives = 3;
+				health = 100;
 			}
 			else { ; }
 			break;
@@ -223,27 +266,31 @@ int main() {
 			LevelFour(health,lives,pickUpLife,hidden);
 			break;
 		case FIVE:
+			DrawCircleV(position, radius, color);
+			LevelFive(health,lives);
+			break;
+		case SIX:
 			ClearBackground(RAYWHITE);
 			TaskBar();
 			DrawCircleV(position, radius, color);
 			break;
-		case SIX:
-			TaskBar();
-			DrawCircleV(position, radius, color);
-			break;
 		case SEVEN:
+			ClearBackground(RAYWHITE);
 			TaskBar();
 			DrawCircleV(position, radius, color);
 			break;
 		case EIGHT:
+			ClearBackground(RAYWHITE);
 			TaskBar();
 			DrawCircleV(position, radius, color);
 			break;
 		case NINE:
+			ClearBackground(RAYWHITE);
 			TaskBar();
 			DrawCircleV(position, radius, color);
 			break;
 		case TEN:
+			ClearBackground(RAYWHITE);
 			TaskBar();
 			DrawCircleV(position, radius, color);
 			break;

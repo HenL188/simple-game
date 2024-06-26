@@ -90,3 +90,28 @@ void LevelFour(int health, int lives, bool pickUpLife, Color color)
 		box2.y -= 30;
 	}
 }
+
+void LevelFive(int health, int lives)
+{
+	Rectangle box = { 200,160,50,50 };
+	ClearBackground(RAYWHITE);
+	DrawText("Use keys one to four to change size", 70, 100, 35, BLACK);
+	DrawRectangle(418, 223, 7.5, 7.5, GREEN);
+	HealthLives(health, lives);
+	TaskBar();
+	for (int i = 0; i < 4; i++) {
+		DrawRectangleRec(box, RED);
+		box.x += 70;
+		box.height -= 10;
+		box.width -= 10;
+		box.y += 10;
+	}
+	box = (Rectangle){ 200,270,50,50 };
+	for (int i = 0; i < 4; i++) {
+		DrawRectangleRec(box, RED);
+		box.x += 70;
+		box.height -= 10;
+		box.width -= 10;
+		box.y -= 10;
+	}
+}

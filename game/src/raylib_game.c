@@ -19,7 +19,7 @@ int main() {
 	//Vector2 gavity = { 0,100 };
 	int health = 100;
 	int healthUp = 0;
-	Level scene = 6;
+	Level scene = 7;
 	int lives = 3;
 	int lifeUp = 0;
 	bool pickUpHealth = false;
@@ -235,6 +235,8 @@ int main() {
 			if (start.six == true) {
 				position = spawn;
 				start.six = false;
+				pickUpHealth = false;
+				healthUp = 0;
 			} else{
 				box.y += boxSpeed;
 				if (((box.y + box.height) >= GetScreenHeight()) || (box.y <= 0)) boxSpeed *= -1;
@@ -313,8 +315,7 @@ int main() {
 			DrawRectangleRec(box, RED);
 			break;
 		case SEVEN:
-			ClearBackground(RAYWHITE);
-			TaskBar();
+			LevelSeven(health, lives, pickUpLife);
 			DrawCircleV(position, radius, color);
 			break;
 		case EIGHT:

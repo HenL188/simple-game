@@ -8,5 +8,7 @@ void LevelThree(int health, int lives, bool pickUpHealth);
 void LevelFour(int health, int lives, bool pickUpLife, Color color); 
 void LevelFive(int health, int lives);
 void LevelSix(int health, int lives, bool pickUpHealth);
+void LevelSeven(int health, int lives, bool pickUpLife);
+void LevelEight(int health, int lives);
 
 

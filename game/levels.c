@@ -121,7 +121,24 @@ void LevelSix(int health, int lives, bool pickUpHealth)
 	ClearBackground(RAYWHITE);
 	TaskBar();
 	HealthLives(health, lives);
-	if (pickUpHealth == false) DrawRectangle(500, 150, 10, 10, PURPLE);
+	if (pickUpHealth == false) DrawRectangle(500, 150, 10, 10, BLUE);
 	else { ; }
 	DrawRectangle(600, 225, 50, 50, GREEN);
+}
+
+void LevelSeven(int health, int lives, bool pickUpLife)
+{
+	ClearBackground(RAYWHITE);
+	TaskBar();
+	HealthLives(health, lives);
+	if (pickUpLife == false) DrawRectangle(460, 245, 10, 10, PURPLE);
+	else { ; }
+	DrawRectangle(400, 225, 50, 50, GREEN);
+	DrawCircle(520,245, 35, RED);
+	DrawCircle(425,160, 35, RED);
+	DrawCircle();
+}
+
+void LevelEight(int health, int lives)
+{
 }
